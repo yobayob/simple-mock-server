@@ -18,6 +18,7 @@ class Request(object):
             return self.request.get_json()
         except:
             return None
+        
     def __getattr__(self, item):
         return getattr(self.request, item)
 

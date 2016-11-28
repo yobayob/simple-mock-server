@@ -18,23 +18,23 @@ url: /mock/add/
 content-type: application/json
 
 body: 
-{   
-    "url":"test",
-    "request": {
-        "method":"POST",
-        "content_type": "application/json",
-        "data":{
-            "foo":"bar"
-        }
-    },
-    "response":{
-        "status_code": 200,
-        "content_type": "application/json",
-        "data": {
-            "ole": "ole"
+    {   
+        "url":"test",
+        "request": {
+            "method":"POST",
+            "content_type": "application/json",
+            "data":{
+                "foo":"bar"
+            }
+        },
+        "response":{
+            "status_code": 200,
+            "content_type": "application/json",
+            "data": {
+                "ole": "ole"
+            }
         }
     }
-}
 ```
 
 ### get mock
@@ -45,14 +45,14 @@ url: /test
 content-type: application/json
 
 body: 
-{
-     "foo":"bar"
-}
+    {
+         "foo":"bar"
+    }
 
 answer: 
-{
-    "ole": "ole"
-}
+    {
+        "ole": "ole"
+    }
 
 ```
 
