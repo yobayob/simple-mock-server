@@ -4,6 +4,12 @@ Python mock server for testing
 
 ## Usage
 
+### run server
+
+```
+python manage.py run
+```
+
 ### put mock
 
 ```
@@ -49,3 +55,13 @@ answer:
 }
 
 ```
+
+### reset mock
+
+```
+method: DELETE
+url: /mock/reset/
+content-type: *
+```
+
+Thank you so much :)
