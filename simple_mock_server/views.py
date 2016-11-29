@@ -1,4 +1,4 @@
-from app import *
+from app import app
 from flask import request, Response, jsonify
 import simplejson
 from simple_mock_server.models import *
@@ -45,12 +45,6 @@ def catch_all(path):
     req = Request(request)
     obj = MockObjects.get(path, req)
     if obj is not None:
-        if 'json' in obj.response.content_type:
-            response = simplejson.dumps(obj.response.data)
-            return Response(status=obj.response.status_code,
-                            content_type=obj.response.content_type,
-                            response=response,
-                            headers={'mock-path': path})
         return Response(status=obj.response.status_code,
                         content_type=obj.response.content_type,
                         response=str(obj.response.data),

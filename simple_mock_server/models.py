@@ -1,4 +1,5 @@
 from app import app
+import simplejson
 
 
 class MockRequest(object):
@@ -18,16 +19,22 @@ class MockRequest(object):
         """
         if self.params and not all([str(v) == params.get(k)
                                     for k, v in self.params.items()]):
-            return True
-        return False
+            return False
+        return True
 
 
 class MockResponse(object):
 
-    def __init__(self, data='OK', status_code=200, content_type='application/json'):
-        self.data = data
-        self.status_code = status_code
+    def __init__(self, data='OK', status_code=200,
+                 content_type='application/json'):
         self.content_type = content_type
+        self.data = self._parse_data(data)
+        self.status_code = status_code
+
+    def _parse_data(self, data):
+        if 'json' in self.content_type:
+            data = simplejson.dumps(data)
+        return data
 
 
 class MockObjects(object):
@@ -42,10 +49,9 @@ class MockObjects(object):
     def get(path, req):
         for obj in app.mock:
             if obj.url == path \
-                    and req.method == obj.request.method \
-                    and req.get_json() == obj.request.data:
-                if obj.request.check_params(**req.args.to_dict()):
-                    continue
+            and req.method == obj.request.method \
+            and req.get_json() == obj.request.data \
+            and obj.request.check_params(**req.args.to_dict()):
                 return obj
         return None
 
