@@ -1,7 +1,7 @@
 from app import *
 from flask import request, Response, jsonify
 import simplejson
-from modules.models import *
+from simple_mock_server.models import *
 
 
 class Request(object):
