@@ -47,7 +47,7 @@ def catch_all(path):
     if obj is not None:
         return Response(status=obj.response.status_code,
                         content_type=obj.response.content_type,
-                        response=str(obj.response.data),
+                        response=obj.response.data,
                         headers={'mock-path': path})
 
 

@@ -4,7 +4,8 @@ import simplejson
 
 class MockRequest(object):
 
-    def __init__(self, method='GET', content_type='application/json', params=None, data=None):
+    def __init__(self, method='GET', content_type='application/json',
+                 params=None, data=None):
         self.params = {}
         if params:
             self.params = params
@@ -34,6 +35,8 @@ class MockResponse(object):
     def _parse_data(self, data):
         if 'json' in self.content_type:
             data = simplejson.dumps(data)
+        elif isinstance(data, (dict, list)):
+            data = repr(data)
         return data
 
 
@@ -47,7 +50,7 @@ class MockObjects(object):
 
     @staticmethod
     def get(path, req):
-        for obj in app.mock:
+        for obj in reversed(app.mock):
             if obj.url == path \
             and req.method == obj.request.method \
             and req.get_json() == obj.request.data \
