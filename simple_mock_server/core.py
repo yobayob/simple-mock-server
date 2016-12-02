@@ -1,8 +1,63 @@
-from app import app
 import simplejson
 
 
+class Request(object):
+    """
+    Wrapper on request
+    fix bug flask with nonexistent json
+    """
+
+    def __init__(self, request):
+        self.request = request
+
+    def get_json(self):
+        try:
+            return self.request.get_json()
+        except:
+            return None
+
+    def __getattr__(self, item):
+        return getattr(self.request, item)
+
+
+class MockStorage(object):
+    """
+    Singleton for storage mock
+    """
+
+    storage = None
+    mocks = list()
+
+    def __new__(cls):
+        if MockStorage.storage is None:
+            MockStorage.storage = object.__new__(cls)
+        return MockStorage.storage
+
+    def register(self, **kwargs):
+        mock = MockObject(**kwargs)
+        self.mocks.append(mock)
+
+    def unregister(self, mock):
+        self.mocks.remove(mock)
+
+    def get(self, path, req):
+        for obj in reversed(self.mocks):
+            if obj.url == path \
+            and req.method == obj.request.method \
+            and req.get_json() == obj.request.data \
+            and obj.request.check_params(**req.args.to_dict()):
+                return obj
+        return None
+
+    def reset_storage(self):
+        self.mocks = []
+
+
 class MockRequest(object):
+    """
+    Data for mock request
+    params - GET params
+    """
 
     def __init__(self, method='GET', content_type='application/json',
                  params=None, data=None):
@@ -16,7 +71,6 @@ class MockRequest(object):
     def check_params(self, **params):
         """
         checking GET-params
-        # TODO: fix bug with list get-params
         """
         if self.params and not all([str(v) == params.get(k)
                                     for k, v in self.params.items()]):
@@ -40,23 +94,12 @@ class MockResponse(object):
         return data
 
 
-class MockObjects(object):
+class MockObject(object):
 
     def __init__(self, url, request, response):
         self.url = url
         self.request = MockRequest(**request)
         self.response = MockResponse(**response)
-        app.mock.append(self)
-
-    @staticmethod
-    def get(path, req):
-        for obj in reversed(app.mock):
-            if obj.url == path \
-            and req.method == obj.request.method \
-            and req.get_json() == obj.request.data \
-            and obj.request.check_params(**req.args.to_dict()):
-                return obj
-        return None
 
     def __repr__(self):
         return 'Mock object for %s' % self.url
