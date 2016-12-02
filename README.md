@@ -15,12 +15,15 @@ python manage.py run
 
 ### put mock
 
+Request:
 ```
 method: PUT
 url: /mock/add/
 content-type: application/json
+```
 
-body: 
+Body:
+```json
     {   
         "url":"test",
         "request": {
@@ -42,17 +45,22 @@ body:
 
 ### get mock
 
+Request:
 ```
 method: POST
 url: /test
 content-type: application/json
+```
 
-body: 
+Body:
+```json 
     {
          "foo":"bar"
     }
+```
 
-answer: 
+Answer: 
+```json
     {
         "ole": "ole"
     }
@@ -61,6 +69,7 @@ answer:
 
 ### reset mock
 
+Request:
 ```
 method: DELETE
 url: /mock/reset/
@@ -71,11 +80,15 @@ content-type: *
 
 ### put xml-mock
 
+Request:
 ```
 method: PUT
 url: /mock/add/
 content-type: application/json
+```
 
+Body:
+```json
 {   
     "url":"test",
     "request": {
@@ -100,15 +113,20 @@ content-type: application/json
 
 ### get mock
 
+Request:
 ```
 method: POST
 url: /test
 content-type: application/xml
+```
 
-body:
+Body:
+```xml
 <foo>bar</foo>
+```
 
-answer:
+Answer:
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
      <answer type="dict">
@@ -120,6 +138,7 @@ answer:
 
 ### reset mock
 
+Request:
 ```
 method: DELETE
 url: /mock/reset/
