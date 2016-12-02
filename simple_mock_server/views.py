@@ -3,9 +3,22 @@ from flask import request, Response, jsonify
 from simple_mock_server.core import *
 
 
+@app.route('/mock/wrong_request/')
+def get_wrong_request():
+    return jsonify({
+        'data': [obj.as_dict() for obj in WrongRequestStorage().requests]
+    })
+
+@app.route('/mock/all/')
+def get_all_mocks():
+    return jsonify({
+        'data': [obj.as_dict() for obj in MockStorage().mocks]
+    })
+
 @app.route('/mock/reset/', methods=['DELETE'])
 def reset():
     MockStorage().reset_storage()
+    WrongRequestStorage().reset_storage()
     return jsonify({
         'answer': 'all clean'
     })
@@ -23,14 +36,14 @@ def receiver():
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'PATCH'])
 def catch_all(path):
     req = Request(request)
-    obj = MockStorage().get(path, req)
+    obj = MockStorage().get(req)
     if obj is not None:
         MockStorage().unregister(obj)
         return Response(status=obj.response.status_code,
                         content_type=obj.response.content_type,
                         response=obj.response.data,
                         headers={'mock-path': path})
-
-
+    else:
+        WrongRequestStorage().register(req)
     return Response('Mock object is not found\n'
                     'URL: %s' % path, status=404)
