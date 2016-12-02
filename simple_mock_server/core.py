@@ -1,7 +1,7 @@
 import simplejson
 from xml.etree.ElementTree import ElementTree
 import xmltodict
-
+import dicttoxml
 
 class Request(object):
     """
@@ -109,6 +109,8 @@ class MockResponse(object):
     def _parse_data(self, data):
         if 'json' in self.content_type:
             data = simplejson.dumps(data)
+        if 'xml' in self.content_type:
+            data = dicttoxml.dicttoxml(data)
         elif isinstance(data, (dict, list)):
             data = repr(data)
         return data
