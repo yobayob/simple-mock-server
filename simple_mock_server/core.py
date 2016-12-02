@@ -1,4 +1,6 @@
 import simplejson
+from xml.etree.ElementTree import ElementTree
+import xmltodict
 
 
 class Request(object):
@@ -9,12 +11,29 @@ class Request(object):
 
     def __init__(self, request):
         self.request = request
+        self.data = self._parse_data()
 
     def get_json(self):
         try:
             return self.request.get_json()
         except:
             return None
+
+    def get_xml(self):
+        try:
+            data = xmltodict.parse(self.request.data, process_namespaces=True)
+            return dict(data)
+        except:
+            return None
+
+    def _parse_data(self):
+        if 'json' in self.content_type:
+            data = self.request.get_json()
+        if 'xml' in self.content_type:
+            data = self.get_xml()
+        else:
+            return self.request.data
+        return data
 
     def __getattr__(self, item):
         return getattr(self.request, item)
@@ -44,7 +63,8 @@ class MockStorage(object):
         for obj in reversed(self.mocks):
             if obj.url == path \
             and req.method == obj.request.method \
-            and req.get_json() == obj.request.data \
+            and req.content_type == obj.request.content_type \
+            and req.data == obj.request.data \
             and obj.request.check_params(**req.args.to_dict()):
                 return obj
         return None
