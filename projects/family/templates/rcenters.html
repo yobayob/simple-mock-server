@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+{% verbatim %}
+<div ng-controller="Rcenter">
+
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-12">
+      <div class="page-header">
+          <h1>Центры реабилитации
+            <small>Обзор</small>
+          </h1>
+      </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li class="active">Центры реабилитации</li>
+          </ol>
+      </div>
+  </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Как добавить новый центр реабилитации?</b>
+                </div>
+                <div class="panel-body">
+                    <p>
+                    Центры реабилитации (ЦР) привязаны к организациям. Чтобы добавить новый,
+                    Вам нужно выбрать организцию или создать новую. Затем можно будет добавить
+                    к этой организации новый ЦР.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel">
+                    <input class="form-control" name="filter"  value="" maxlength="30" size="30" type="text" placeholder="Быстрый фильтр центров реабилитации" ng-model="query.name">
+                </div>
+            <table id="" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Полное наименование</th>
+                        <th>Телефон</th>
+                        <th>Электронная почта</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                <tr ng-repeat="rcenter in rcenters | filter: query"><td>{{rcenter.id}}</td><td><a href="/rcenter/{{rcenter.id}}">{{rcenter.name}}</a></td><td>{{rcenter.phone}}</td><td>{{rcenter.mail}}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endverbatim %}
+{% endblock%}

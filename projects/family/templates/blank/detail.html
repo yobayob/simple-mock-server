@@ -1,0 +1,232 @@
+{% extends 'profile/profile_content.html' %}
+
+{% block nav%}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li><a href="#">Учетные карточки</a></li>
+            <li class="active">{{ object }}</li>
+        </ol>
+    </li>
+{% endblock %}
+
+{% block content_left %}
+    <div class="panel panel-skin" ng-controller="Data">
+            <div class="panel-heading">
+                <div class="panel-title">
+                   {{ object }}
+                    <a class="btn btn-sm btn-danger pull-right"
+                          href="#" )>
+                        <i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        <div class="panel-body">
+
+            <div class="col-md-6 form-group">
+                    <label>ФИО клиента</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.name }}">
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label>Возраст</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.age }}">
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label>Пол</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.get_sex_display }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Серия паспорта</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.passport_series }}">
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label>Номер паспорта</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.passport_number }}">
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label>Дата выдачи</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.setter_date }}">
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <label>Паспорт выдан</label>
+                    <input disabled="false" class="form-control" value="{{ object.patient.setter_org }}">
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <label>Телефон</label>
+                    <input disabled="false" class="form-control" value="{{ object.phone }}">
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <label>Причина обращения</label>
+                    <input disabled="false" class="form-control" value="{{ object.reason_for_request }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Гражданство</label>
+                    <input disabled="false" class="form-control" value="{{ object.citizenship }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Категория клиента</label>
+                    <input disabled="false" class="form-control" value="{{ object.category_of_client }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Образование</label>
+                    <input disabled="false" class="form-control" value="{{ object.get_education_display }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Основная профессия</label>
+                    <input disabled="false" class="form-control" value="{{ object.position }}">
+                </div>
+
+
+                <div class="col-md-6 form-group">
+                    <label>Источник дохода</label>
+                    <input disabled="false" class="form-control" value="{{ object.sources_of_income }}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label>Среднедушевой доход</label>
+                    <input disabled="false" class="form-control" value="{{ object.per_capita_income }}">
+                </div>
+
+                    <label  {% if object.nark %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.nark %} checked="true"  {% endif %}
+                                   disabled> Наличие официального документа подтверждающего диагноз «Наркомания»
+                        </label>
+                <div class="col-md-12 form-group">
+                    <label>Комметарий</label>
+                    <textarea disabled="false" class="form-control">{{ object.comment }}</textarea>
+                </div>
+
+                    {% if object.file %}
+                    <label><a class="btn btn-sm btn-primary pull-right"
+                          href="{{ object.file.url }}" )>
+                        <i class="fa fa-file fa-lg" aria-hidden="true"></i>
+                        Результаты опроса получателя
+                    </a>
+                    </label>
+                    {% endif %}
+
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_right %}
+
+    <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Члены семьи
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'blank_add_family' pk=object.pk %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <caption>Все члены семьи</caption>
+                    <thead>
+                    <tr>
+                        <th>Полное имя</th>
+                        <th>Степень родства</th>
+                        <th>Наличие регистрации</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for family in object.family_members.all %}
+                        <tr>
+                            <td>{{ family.full_name }}</td>
+                            <td>{{ family.relation_degree }}</td>
+                            <td>{% if family.registration %} Да {% else %} Нет {% endif %}</td>
+                        </tr>
+                    {% empty %}
+                        <td colspan="3">Членов семьи не найдено</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+<div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    План обслуживания клиента
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'blank_add_service_plan' blank=object.pk %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <caption>Все услуги входящие в план обслуживания по данной учетной карте</caption>
+                    <thead>
+                    <tr>
+                        <th>Услуга</th>
+                        <th>Форма</th>
+                        <th>Дата начала</th>
+                        <th>Дата окончания</th>
+                        <th>Специалист</th>
+                        <th>Услуги оказаны</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for service in object.blankserviceplan_set.all %}
+                        <tr>
+                            <td><a href="{% url 'blank_service_plan_detail' pk=service.pk %}">{{ service.service.name }}</a></td>
+                            <td>{{ service.service.form_of_provision }}</td>
+                            <td>{{ service.date_start }}</td>
+                            <td>{{ service.date_end }}</td>
+                            <td>{{ service.user }}</td>
+                            <td><ul class="unstyled"> {% for s in service.blankservice_set.all %}<li>{{ s.date }} - {{ s.get_status_display }}</li>{% endfor %}</ul></td>
+                        </tr>
+                    {% empty %}
+                        <td colspan="3">Услуг не найдено</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Все учетные карты клиента
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <caption>Все найденные карты для данного клиента</caption>
+                    <thead>
+                    <tr>
+                        <th>Карта</th>
+                        <th>Организация</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for blank in object.patient.blank_set.all %}
+                        <tr>
+                            <td><a href="{% url 'blank_detail' pk=blank.pk %}">{{ blank }}</a></td>
+                            <td><a href="{% url 'org_detail' pk=blank.organization.pk %}">{{ blank.organization }}</a></td>
+                        </tr>
+                    {% empty %}
+                        <td colspan="2">Карт не найдено</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+{% endblock %}

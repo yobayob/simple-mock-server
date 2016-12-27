@@ -1,0 +1,59 @@
+{% extends 'profile/profile_content.html' %}
+
+{% load static %}
+
+{% block content_left %}
+    <script src=" {% static 'bower_components/chart.js/dist/Chart.js' %}"></script>
+
+    {% for d in data %}
+        <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    {{ d.name }}
+                </div>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Всего:</strong> {{ d.count }}</p>
+                    <p><strong>Создано за последние 30 дней:</strong> {{ d.new }}</p>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="{{ d.name }}"></canvas>
+                    <script>
+                        var ctx = document.getElementById("{{ d.name }}");
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: [{% for label in d.labels %} "{{ label }}",{% endfor %}],
+                                datasets: [{
+                                    label: '{{ d.name }}',
+                                    data: [{{ d.count }}, {{ d.new }}],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255,99,132,1)',
+                                        'rgba(54, 162, 235, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -5,7 +5,7 @@ Python mock server for testing.
 ### Deploy
 
 ```
-virtualenv -p python 3.5 .venv
+virtualenv -p python3.5 .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python manage.py run
@@ -25,7 +25,7 @@ content-type: application/json
 Body:
 ```json
     {   
-        "url":"test",
+        "url":"/test",
         "request": {
             "method":"POST",
             "content_type": "application/json",

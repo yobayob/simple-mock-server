@@ -1,0 +1,31 @@
+{% extends 'profile/profile_content.html' %}
+{% load i18n bootstrap3 %}
+{% block nav %}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li сlass="active">Личные сообщения</li>
+        </ol>
+    </li>
+{% endblock %}
+
+{% block content_left %}
+
+    <div class="panel panel-skin">
+    <div class="panel-heading">
+        <div class="panel-title">
+            {% trans "Compose Message" %}
+        </div>
+    </div>
+        <div class="panel-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <table>
+                    {% bootstrap_form form %}
+                </table>
+                <input class="btn btn-green" type="submit" value="{% trans "Send" %} &raquo;"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

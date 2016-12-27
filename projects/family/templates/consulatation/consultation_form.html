@@ -1,0 +1,24 @@
+{% extends 'profile/profile_content.html' %}
+
+{% block nav %}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li><a href="{{ consultation_url }}">Журнал учета консультаций</a></li>
+            <li class="active">Бланк учета консультации</li>
+        </ol>
+    </li>
+{% endblock %}
+
+{% block content_left %}
+    <div class="panel panel-skin" ng-controller="AddPatient">
+        <div class="panel-heading">
+            <div class="panel-title">
+                {{ title }}
+            </div>
+        </div>
+        <div class="panel-body">
+            {% include "wizard.html" %}
+        </div>
+    </div>
+{% endblock %}

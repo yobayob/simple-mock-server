@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block nav%}
+    {% url 'certificate' as certificate_url %}
+    {% url 'certificate_detail' pk=object.id as certificate_detail_url %}
+    {% url 'add_certificate' as add_certificate_url %}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            {% if request.get_full_path == certificate_detail_url %}
+            <li><a href="#">Сертификаты</a></li>
+            <li class="active">СР-{{ object.id }}</li>
+            {% elif request.get_full_path == add_certificate_url %}
+            <li><a href="#">Сертификаты</a></li>
+            <li class="active">Выдать новый сертификат</li>
+            {% else %}
+            <li class="active">Сертификаты</li>
+            {% endif %}
+        </ol>
+    </li>
+{% endblock %}
+{% block content %}
+    {% load qr_tags %}
+    {% url 'certificate' as certificate_url %}
+    {% url 'certificate_detail' pk=object.id as certificate_detail_url %}
+    {% url 'add_certificate' as add_certificate_url %}
+    <div class="container" ng-controller="Profile">
+        <div class="row">
+            {% include 'profile/nav.html' %}
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" ng-controller="Data">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {% if request.get_full_path == certificate_url %}
+                                {% elif request.get_full_path == add_certificate_url %}
+
+                                {% elif request.get_full_path == certificate_detail_url %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock%}

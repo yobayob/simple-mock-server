@@ -1,0 +1,130 @@
+{% extends 'profile/profile_content.html' %}
+{% load l10n %}
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li><a href="/">Система</a></li>
+    </ol>
+{% endblock %}
+{% block title %}Личные сообщения{% endblock %}
+{% block content_left %}
+    <div class="panel panel-skin">
+        <div class="panel-heading">
+            <div class="panel-title">
+
+                {% if object.user.pk == request.user.pk %} Ваш рабочий кабинет
+                    <a class="btn btn-sm btn-danger pull-right"
+                       href="{% url 'user_edit' %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                {% else %}
+                    Рабочий кабинет
+
+                     <a class="btn btn-sm btn-danger pull-right"
+                          href="{% url 'messages_compose_to' pk=object.user.pk %}">
+                        <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                <div class="profile-avatar">
+                    <img class="img-circle img-responsive" src="{{ object.get_mugshot_url }}" alt="profile picture">
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12">
+                <div class="user-name">
+                    <strong> {{ object.user.get_full_name }} </strong> &nbsp; {% if object.position %}
+                    <span class="label label-success">{{ object.position }}</span>{% endif %}
+                    <br>{{ object.organization }}
+                </div>
+                <div class="user-information">
+                    <p>{{ object.specialization }}</p>
+                </div>
+                <ul class="profile-info">
+                    {% if object.phone %}
+                        <li><i class="glyphicon glyphicon-phone"></i> {{ object.phone }}</li>
+                    {% endif %}
+                    {% if object.mail %}
+                        <li><i class="glyphicon glyphicon-envelope"></i> {{ object.mail }}</li>
+                    {% endif %}
+                    {% if object.time_work %}
+                        <li><i class="glyphicon glyphicon-time"></i> {{ object.time_work }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% if object.user.pk == request.user.pk %}
+        <div class="panel panel-skin">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Учетные карты
+                <a class="btn btn-sm btn-danger pull-right" href="{% url 'add_blank' %}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <caption>Последние обновленные карты</caption>
+                <thead>
+                <tr>
+                    <th>Номер карты</th>
+                    <th>Клиент</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for blank in object.organization.last_updated_blanks %}
+                    <tr>
+                        <td><a href="{{ blank.get_absolute_url }}">{{ blank.pk }}</a></td>
+                        <td><a href="{{ blank.get_absolute_url }}">{{ blank.patient }}</a></td>
+                    </tr>
+                {% empty %}
+                    <td colspan="3">Услуг не найдено</td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+    {% block content_right %}
+        {% if object.user.pk == request.user.pk %}
+        <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Услуги
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'add_blank_service' %}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <caption>Виды услуг</caption>
+                    <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Форма оказания</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for service in object.organization.blank_services.all %}
+                        <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.form_of_provision }}</td>
+                        </tr>
+                    {% empty %}
+                        <td colspan="3">Услуг не найдено</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    {% endblock %}

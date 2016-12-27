@@ -1,0 +1,243 @@
+{% extends 'profile/profile_content.html' %}
+{% block nav %}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li><a href="{% url 'consultation' %}">Журнал учета консультаций</a></li>
+            <li class="active">Консультация №{{ object.id }}</li>
+        </ol>
+    </li>
+{% endblock %}
+{% block content_left %}
+    <div class="panel panel-skin">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Консультация №{{ object.id }}
+                <a class="btn btn-sm btn-danger pull-right"
+                   href="{% url 'consultation_pdf' pk=object.id %}" )>
+                    PDF
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Номер консультации в системе</label>
+                        <input contenteditable="false" class="form-control" value="{{ object.id }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Номер консультации в организации</label>
+                        <input contenteditable="false" class="form-control" value="{{ object.id_in_organization }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>ФИО клиента:</label>
+                        <input contenteditable="false" class="form-control" value="{{ object.patient.name }}">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Возраст:</label>
+                        <input contenteditable="false" class="form-control" value="{{ object.patient.age }}">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Пол:</label>
+                        <input contenteditable="false" class="form-control"
+                               value="{{ object.patient.get_sex_display }}">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Сведения о специалистах:</label>
+                        <textarea elastic contenteditable="false"
+                                  class="form-control">{{ object.specialist }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Краткое описание обращения:</label>
+                        <textarea elastic contenteditable="false"
+                                  class="form-control">{{ object.treatment | safe }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Иная информация</label>
+                        <textarea elastic contenteditable="false"
+                                  class="form-control">{{ object.description }}</textarea>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <label>Предоставлена информация</label>
+
+                    <div class="checkbox">
+                        <label  {% if object.additional_info_1 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_1 %} checked="true"  {% endif %}
+                                   disabled> О наличии вакансий/порядке обращения в службу занятости
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_2 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_2 %} checked="true"  {% endif %}
+                                   disabled> О порядке предоставления помощи ВИЧ-инфицированным
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_3 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_3 %} checked="true"  {% endif %}
+                                   disabled> О режиме и порядке работы групп взаимопомощи
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_4 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_4 %} checked="true"  {% endif %}
+                                   disabled> О порядке получения услуг по социальной реабилитации и ресоциализации
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_5 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_5 %} checked="true"  {% endif %}
+                                   disabled> О порядке получения социальных услуг
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_6 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_6 %} checked="true"  {% endif %}
+                                   disabled> О порядке получения медицинской помощи
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_7 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_7 %} checked="true"  {% endif %}
+                                   disabled> О службах занятости населения
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_8 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_8 %} checked="true"  {% endif %}
+                                   disabled> О СПИД-центрах
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_9 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_9 %} checked="true"  {% endif %}
+                                   disabled> О группах взаимопомощи
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_10 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_10 %} checked="true"  {% endif %}
+                                   disabled> О реабилитационных центрах для лиц, отказавшихся от немедицинского
+                            потребления наркотиков
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_11 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_11 %} checked="true"  {% endif %}
+                                   disabled> О государственных учреждениях-поставщиках социальных услуг
+                        </label>
+                        <br>
+                        <label  {% if object.additional_info_12 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.additional_info_12 %} checked="true"  {% endif %}
+                                   disabled> О медицинских учреждениях наркологического профиля
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <label>Обращение</label>
+
+                    <div class="checkbox">
+                        <label  {% if object.primary_treatment %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.primary_treatment %} checked="true"  {% endif %}
+                                   disabled> Первичное обращение с проблемой
+                        </label>
+                        <br>
+                        <label  {% if object.primary_treatment_org %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.primary_treatment_org %} checked="true"  {% endif %}
+                                   disabled> Первичное обращение в организацию
+                        </label>
+                    </div>
+
+                    <label>Рекомендовано обратится к следующим специалистам</label>
+
+                    <div class="checkbox">
+                        <label  {% if object.specialist_1 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_1 %} checked="true"  {% endif %} disabled>
+                            Психологу
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_2 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_2 %} checked="true"  {% endif %} disabled>
+                            Юристу
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_3 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_3 %} checked="true"  {% endif %} disabled>
+                            Врачу-наркологу
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_4 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_4 %} checked="true"  {% endif %} disabled>
+                            Педагогу
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_5 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_5 %} checked="true"  {% endif %} disabled>
+                            Врачу-иммунологу
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_6 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_6 %} checked="true"  {% endif %} disabled>
+                            Специалисту по работе с семьей
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_7 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_7 %} checked="true"  {% endif %} disabled>
+                            Психотерапевту
+                        </label>
+                        <br>
+                        <label  {% if object.specialist_8 %} style="font-weight: bold" {% endif %}>
+                            <input type="checkbox" {% if object.specialist_8 %} checked="true"  {% endif %} disabled>
+                            Специалисту по социальной работе
+                        </label>
+                        <br>
+                        {% if object.specialist_text %}
+                            <label style="font-weight: bold">
+                                <input type="checkbox" checked="true" disabled> {{ object.specialist_text }}
+                            </label>
+                        {% endif %}
+                    </div>
+
+                    {% if object.from_social_service %}
+                        <label>Направлен из</label>
+                        <div class="checkbox">
+                            <label style="font-weight: bold">
+                                <input type="checkbox" checked="true" disabled> {{ object.from_social_service }}
+                            </label>
+                        </div>
+                    {% elif object.from_social_service_text %}
+                        <label>Направлен из</label>
+                        <div class="checkbox">
+                            <label style="font-weight: bold">
+                                <input type="checkbox" checked="true" disabled> {{ object.from_social_service_text }}
+                            </label>
+                        </div>
+                    {% endif %}
+                    {% if object.sent %}
+                        <label>Направлен в</label>
+                        <div class="checkbox">
+                            {% for sent in object.sent %}
+                                <label style="font-weight: bold">
+                                    <input type="checkbox" checked="true" disabled> {{ sent }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

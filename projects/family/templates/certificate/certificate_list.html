@@ -1,0 +1,80 @@
+{% extends 'profile/profile_content.html' %}
+{% block nav %}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li class="active">Сертификаты</li>
+        </ol>
+    </li>
+{% endblock %}
+
+{% block content_left %}
+    <div class="panel panel-skin" ng-controller="Data">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Все сертификаты
+                </div>
+            </div>
+        <div class="panel-body">
+
+            <table class="table table-hover table-striped" ng-init="getData('{% url 'jsonCertificate' %}')">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th ng-click="sort('patient')">Имя клиента
+                <span ng-show="orderProp=='patient'"
+                      ng-class="{'glyphicon glyphicon-triangle-bottom':!sortReverse,'glyphicon glyphicon-triangle-top':sortReverse}"></span>
+                    </th>
+                    <th ng-click="sort('organization')">Направлен в
+                <span ng-show="orderProp=='organization'"
+                      ng-class="{'glyphicon glyphicon-triangle-bottom':!sortReverse,'glyphicon glyphicon-triangle-top':sortReverse}"></span>
+                    </th>
+                    <th ng-click="sort('step')">Статус
+                <span ng-show="orderProp=='step'"
+                      ng-class="{'glyphicon glyphicon-triangle-bottom':!sortReverse,'glyphicon glyphicon-triangle-top':sortReverse}"></span>
+                    </th>
+                    <th ng-click="sort('date')">Дата окончания
+                <span ng-show="orderProp=='date'"
+                      ng-class="{'glyphicon glyphicon-triangle-bottom':!sortReverse,'glyphicon glyphicon-triangle-top':sortReverse}"></span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% verbatim %}
+                <tr ng-repeat="certificate in data | orderBy:orderProp:sortReverse">
+                    <td><a href="{{ certificate.id }}">СР-{{ certificate.id }}</a></td>
+                    <td>{{ certificate.patient }}</td>
+                    <td>{{ certificate.organization }}</td>
+                    <td>{{ certificate.step }}</td>
+                    <td>{{ certificate.date }}</td>
+                </tr>
+                {% endverbatim %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_right %}
+
+    {% if user.profile.organization.is_certificate_for_patients or user.is_superuser %}
+        <div class="panel panel-skin" ng-controller="Data">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Погасить купон
+                </div>
+            </div>
+            <div class="panel-body">
+                <form class="" method="POST" action="../">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.code.name }}">{{ form.code.label }}</label>
+                        {{ form.code }}
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-danger">Погасить купон</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

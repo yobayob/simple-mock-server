@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% verbatim %}
+<div ng-controller="Person">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>Специалисты
+                    <small></small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Система</a></li>
+                <li><a href="/persons/">Специалисты</a></li>
+                <li class="active">Обзор</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                    <div class="form-group">
+                        <input class="form-control" name="filter" id="filter" value="" maxlength="30" size="30" type="text" placeholder="Быстрый фильтр специалистов" ng-model="query.name">
+                    </div>
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Электронная почта</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr ng-repeat="person in persons | filter: query"><td><a href="/person/{{person.id}}">{{person.name}}</a></td><td>{{person.mail}}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endverbatim %}
+{% endblock%}

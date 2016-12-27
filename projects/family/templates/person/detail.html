@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>Константинов Дмитрий
+                    <small></small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Система</a></li>
+                <li><a href="/persons/">Специалисты</a></li>
+                <li class="active">Константинов Дмитрий</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-3">
+    </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Общая информация
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <p><b>Полное имя:</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{object.name}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <p><b>Телефон</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{object.phone}} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <p><b>Электронная почта</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <a href="mailto:{{object.mail}}">{{object.mail}}</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <p><b>Добавлен</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>2015-05-10</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            <p><b>Примечание</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{object.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock%}

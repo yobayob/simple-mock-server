@@ -1,0 +1,113 @@
+{% extends 'profile/profile_content.html' %}
+
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li><a href="{% url 'orgs' %}">Организации</a></li>
+        <li><a href="{% url 'org_detail' pk=object.org.pk %}">{{ object.org }}</a></li>
+        <li class="active">{{ object.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content_full %}
+
+
+    {% load pytils_dt %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-skin">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Общая информация
+                                </div>
+                            </div>
+                <div class="panel-body">
+                    <h3 style="margin-top:0px;"><b>{{ object.name }}</b></h3>
+
+                    <h3 style="margin-top:0px;">
+                        <small>{{ object.org.name }}</small>
+                    </h3>
+                    {% if object.description %}
+                        <hr>
+                        <h4><b>Описание центра:</b></h4>
+                        {{ object.description | safe }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel panel-skin">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Подразделение на карте
+                                </div>
+                            </div>
+                <div style="width:100%; height:500px">
+                    <yandex-map center="[{{ object.org.coor_x | safe }},{{ object.org.coor_y | safe }}]" zoom=15>
+
+                        <ymap-marker coordinates="[{{ object.coor_x | safe }},{{ object.coor_y | safe }}]"
+                                     properties="{balloonContent: '{{ object.name }}'}"></ymap-marker>
+
+                    </yandex-map>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-skin" ng-controller="Data">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Сводная информация
+                                </div>
+                            </div>
+                <div class="panel-body">
+                    {% if object.address %}<p><b>Адрес: </b>{{ object.address }}</p>{% endif %}
+                    {% if object.phone %}<p><b>Телефон:</b> {{ object.phone }}</p>{% endif %}
+                    {% if object.fax %}<p><b>Факс:</b> {{ object.fax }}</p>{% endif %}
+                    {% if object.site %}
+                        <p><b>Веб-сайт:</b> <a target="_blank" href="{{ object.site }}">{{ object.get_site_name }}</a>
+                        </p> {% endif %}
+                    {% if object.mail %}
+                        <p><b>Электронная почта:</b> <a href="mailto:{{ object.mail }}">{{ object.mail }}</a>
+                        </p>{% endif %}
+                    {% if object.chief %}<p><b>Руководитель:</b> {{ object.chief }}</p>{% endif %}
+                    {% if object.religion.name %}
+                        <p><b>Конфессиональная принадлежность: </b> {{ object.religion.name }}</p>{% endif %}
+                    <hr>
+                    <p><b>Добавлен:</b> {{ object.created | ru_strftime:"%d %B %Y" }}</p>
+
+                    <p><b>Последняя правка:</b> {{ object.changed |ru_strftime:"%d %B %Y" }}</p>
+                </div>
+            </div>
+            {% if object.seats %}
+                <div class="panel panel-skin">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Места в центре реабилитации
+                                </div>
+                            </div>
+                    <div class="panel-body">
+                        <p><b>Общее количество мест: </b>{{ object.seats }} </p>
+
+                        <p><b>Места для мужчин: </b>{{ object.seats_for_men }}</p>
+
+                        <p><b>Места для женщин: </b>{{ object.seats_for_woman }}</p>
+                    </div>
+
+                </div>
+            {% endif %}
+            <div class="panel panel-skin" ng-controller="Data">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Услуги
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {% for service in object.socialserviceitem_set.all %}
+                          <p>{{ service }}</p>
+                        {% empty %}
+                          <p>Услуг не найдено</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

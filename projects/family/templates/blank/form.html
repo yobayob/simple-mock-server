@@ -1,0 +1,25 @@
+{% extends 'profile/profile_content.html' %}
+
+{% block nav%}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li><a href="#">Учетные карточки</a></li>
+            <li class="active">Создать новую</li>
+        </ol>
+    </li>
+{% endblock %}
+
+{% block content_left %}
+     <div class="panel panel-skin" ng-controller="Profile">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Добавить учетную карточку
+                </div>
+            </div>
+        <div class="panel-body" ng-controller="Data" >
+
+           {% include 'wizard.html' %}
+
+        </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block nav%}
+<li>
+<ol class="breadcrumb">
+    <li><a href="/">Система</a></li>
+    <li><a href="{% url 'legislation' %}">Нормативно-правовые акты</a></li>
+    <li class="active">{{object.name}}</li>
+</ol>
+</li>
+{% endblock %}
+{% block content %}
+<div class="container" ng-controller="DocCtrl"  ng-init="getPdf('{{object.file.url}}')">
+    <div class="container">
+        <div class="row" ng-controller="Profile">
+            {% include 'profile/nav.html' %}
+            <div class="col-md-9">
+            	<div class="panel panel-default">
+  					<div class="panel-body">
+  					<ng-pdf template-url="{{STATIC_URL}}partials/viewer.html" canvasid="pdf" scale="page-fit" page=1></ng-pdf>
+                    </div>
+  				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

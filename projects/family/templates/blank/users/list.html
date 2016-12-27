@@ -1,0 +1,53 @@
+{% extends 'profile/profile_content.html' %}
+{% load l10n %}
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li class="active"><a href="#">Специалисты</a></li>
+    </ol>
+{% endblock %}
+{% block content_full %}
+    <div class="panel panel-skin">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Специалисты
+            </div>
+        </div>
+        <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Имя и фамилия</th>
+                <th>Должность</th>
+                <th>Информация</th>
+                <th>Специализация</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td><a href="{{ object.get_absolute_url }}">{{ object.user.get_full_name }}</a></td>
+                <td>{{ object.position }}</td>
+                <td>
+                    <ul class="profile-info">
+                    {% if object.phone %}
+                        <li><i class="glyphicon glyphicon-phone"></i> {{ object.phone }}</li>
+                    {% endif %}
+                    {% if object.mail %}
+                        <li><i class="glyphicon glyphicon-envelope"></i> {{ object.mail }}</li>
+                    {% endif %}
+                    {% if object.time_work %}
+                        <li><i class="glyphicon glyphicon-time"></i> {{ object.time_work }}</li>
+                    {% endif %}
+                </ul>
+                </td>
+                <td>
+                    {{ object.specialization }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'profile/profile_content.html' %}
+{% load bootstrap3 %}
+{% load l10n %}
+{% block nav %}
+    {% url 'profile' as profile_url %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li><a href="{{ profile_url }}">Личный кабинет</a></li>
+        <li class="active">{{ title }}</li>
+    </ol>
+{% endblock %}
+{% block content_left %}
+
+    <div class="panel panel-skin" ng-controller="Data">
+        <div class="panel-heading">
+            <div class="panel-title">
+                {{ title }}
+            </div>
+        </div>
+        <div class="panel-body" ng-controller="Profile">
+                <form action="" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button type="submit" class="btn btn-green">
+                            Сохранить
+                        </button>
+                    {% endbuttons %}
+                </form>
+        </div>
+    </div>
+{% endblock %}

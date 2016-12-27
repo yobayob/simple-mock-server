@@ -1,0 +1,142 @@
+{% url 'profile' as profile_url %}
+{% url 'profile_service' as profile_service_url %}
+{% url 'profile_seat' as profile_seat_url %}
+{% url 'profile_event' as profile_event_url %}
+{% url 'orgs' as orgs_url %}
+{% url 'event' as event_url %}
+{% url 'seat' as seat_url %}
+{% url 'legislation' as legislation_url %}
+{% url 'consultation' as consultation_url %}
+{% url 'redirection' as redirection_url %}
+{% url 'certificate' as certificate_url %}
+{% url 'consultation_archive' as consultation_archive_url %}
+{% url 'add_consultation' as add_consultation_url %}
+{% url 'certificate' as certificate_url %}
+{% url 'add_certificate' as add_certificate_url %}
+{% url 'event_detail' pk=object.id as event_detail_url %}
+{% url 'user_list' as user_list_url %}
+{% url 'user_profile' pk=request.user.profile.id as user_detail_url %}
+{% url 'blank_list' as blank_list_url %}
+{% url 'report' as report_url %}
+<div class="nav-side-menu">
+    <div class="brand">Личный кабинет</div>
+
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+    <div class="menu-list">
+        <ul id="menu-content" class="menu-content collapse out">
+
+
+            {% if user.profile.organization %}
+
+
+            <li data-toggle="collapse" data-target="#my_cabinet"
+                class="collapsed">
+                <a href="#"><i class="fa fa-tasks fa-lg"></i> Рабочий кабинет<span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse  {% if user_list_url in request.get_full_path or blank_list_url in request.get_full_path %} in {% endif %}" id="my_cabinet">
+                <li class="{% if user_detail_url == request.get_full_path %}active{% endif %}"><a href="{{ user_detail_url }}">
+                    <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>Рабочий кабинет</a></li>
+                <li {% if blank_list_url in request.get_full_path %}class="active"{% endif %}>
+                     <a href="{{ blank_list_url }}">
+                         <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>Учетные карточки</a></li>
+                <li {% if user_list_url == request.get_full_path %}class="active"{% endif %}>
+                     <a href="{{ user_list_url }}">
+                         <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>Информация о специалистах</a></li>
+            </ul>
+
+
+            <li data-toggle="collapse" data-target="#cabinet"
+                class="collapsed">
+                <a href="#"><i class="fa fa-home fa-lg"></i> Профиль оранизации<span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse  {% if profile_url in request.get_full_path %} in {% endif %}" id="cabinet">
+                <li class="{% if profile_url == request.get_full_path %}active{% endif %}"><a href="{{ profile_url }}">
+                    <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>Профиль организации</a></li>
+                <li class="{% if profile_service_url == request.get_full_path %}active{% endif %}"><a
+                        href="{{ profile_service_url }}"> <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Услуги</a>
+                </li>
+                <li class="{% if profile_seat_url == request.get_full_path %}active{% endif %}"><a
+                        href="{{ profile_seat_url }}"> <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Cвободные места</a></li>
+                <li class="{% if profile_event_url == request.get_full_path %}active{% endif %}"><a
+                        href="{{ profile_event_url }}"> <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Мероприятиях </a></li>
+            </ul>
+
+
+            <li {% if orgs_url in request.get_full_path %}class="active"{% endif %}>
+                <a href="{{ orgs_url }}"><i class="fa fa-bank fa-lg"></i> Организации</a>
+            </li>
+            <li data-toggle="collapse" data-target="#consultation"
+                class="collapsed">
+                <a href="#"><i class="fa fa-book fa-lg" aria-hidden="true"></i> Консультации <span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse  {% if  consultation_url in request.get_full_path %} in {% endif %}"
+                id="consultation">
+                <li class="{% if consultation_url == request.get_full_path %}active{% endif %}"><a
+                        href="{{ consultation_url }}">
+                    <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+
+                    Журнал учета консультаций
+                </a>
+                </li>
+                <li class="{% if add_consultation_url == request.get_full_path %}active{% endif %}"><a
+                        href="{{ add_consultation_url }}"> <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Бланк учета консультации</a></li>
+                <li role="presentation"
+                    {% if consultation_archive_url in request.get_full_path %}class="active"{% endif %}><a
+                        href="{{ consultation_archive_url }}"> <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Архив консультаций</a></li>
+                <li role="presentation"
+                    {% if redirection_url == request.get_full_path %}class="active"{% endif %}><a
+                        href="{{ redirection_url }}">
+                    <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                    Журнал перенаправления</a></li>
+            </ul>
+            {% endif %}
+            {% if user.profile.organization.is_certificate_for_patients or user.is_superuser or user.profile.organization.is_query_certificate_for_patients %}
+            <li data-toggle="collapse" data-target="#certificate" class="collapsed">
+                <a href="#"><i class="fa fa-certificate fa-lg" aria-hidden="true"></i></i> Сертификаты <span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse {% if certificate_url in request.get_full_path %} in {% endif %}" id="certificate">
+                <li class="{% if certificate_url == request.get_full_path %}active{% endif %}">
+                    <a href="{{ certificate_url }}">
+                    <i class="fa fa-angle-right fa-lg"></i>
+                            Все сертификаты
+                    </a>
+                </li>
+                    {% if user.profile.organization.is_query_certificate_for_patients or user.is_superuser %}
+                        <li class="{% if add_certificate_url == request.get_full_path %}active{% endif %}"><a
+                                href="{{ add_certificate_url }}"> <i
+                                class="fa fa-angle-right fa-lg"></i> Выдать сертификат</a></li>
+                    {% endif %}
+            </ul>
+            {% endif %}
+
+            <li {% if seat_url == request.get_full_path %}class="active"{% endif %}>
+                <a href="{% url 'seat' %}">
+                    <i class="fa fa-bed fa-lg" aria-hidden="true"></i>
+                    Свободные места</a>
+            </li>
+            <li {% if event_url == request.get_full_path or event_detail_url == request.get_full_path %}class="active"{% endif %}>
+                     <a href="{% url 'event' %}">
+                         <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
+                         Мероприятия</a>
+            </li>
+            <li {% if legislation_url in request.get_full_path %}class="active"{% endif %}>
+            <a  href="{% url 'legislation' %}">
+                <i class="fa fa-gavel fa-lg" aria-hidden="true"></i>
+                Законодательство</a>
+            </li>
+            {% if request.user.is_superuser %}
+                <li {% if report_url in request.get_full_path %}class="active"{% endif %}>
+            <a  href="{{ report_url }}">
+                <i class="fa fa-clipboard fa-lg" aria-hidden="true"></i>
+                Отчеты</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

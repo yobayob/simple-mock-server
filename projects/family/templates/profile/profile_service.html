@@ -1,0 +1,59 @@
+{% extends 'profile/profile_content.html' %}
+
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li><a href="{% url 'profile' %}">Личный кабинет</a></li>
+        <li class="active">Услуги</li>
+    </ol>
+{% endblock %}
+
+{% block content_full %}
+        <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Предоставляемые услуги
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'add_service_form' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </div>
+            </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Подразделение</th>
+                    <th>Название</th>
+                    <th>Показания</th>
+                    <th>Требования к клиенту</th>
+                    <th>Срок оказания услуги</th>
+                    <th>Форма оказания услуги</th>
+                    <th>Стоимость</th>
+                    <th>Редактировать</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for socialservice in object.organization.socialservice_set.all %}
+                    {% for service in socialservice.socialserviceitem_set.all %}
+                        <tr>
+                            <td scope="row">{{ forloop.counter }}</td>
+                            <td>{{ socialservice.name }}</td>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.indications }}</td>
+                            <td>{{ service.requirements }}</td>
+                            <td>{{ service.term_of_service }}</td>
+                            <td>{{ service.form_of_provision }}</td>
+                            <td>{{ service.cost }}</td>
+                            <td><a href="{% url 'edit_service' pk=service.pk %}" class="btn btn-green">
+                                <span class="glyphicon glyphicon-pencil"></span> Редактировать
+                            </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

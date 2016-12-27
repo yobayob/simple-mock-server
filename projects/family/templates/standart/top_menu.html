@@ -1,0 +1,47 @@
+{# TOP MENU #}
+
+{% load inbox %}
+
+ {% inbox_count as mail %}
+
+    <ul class="nav navbar-nav navbar-right text-center">
+        {% if public %}
+        <li>
+            <a href="#" ng-init="showSpecial=false" ng-click="showSpecial =!showSpecial;">
+                <i class="fa fa-eye fa-1x" aria-hidden="true" style="font-size: 18px;"></i>
+            </a>
+        </li>
+        {% endif %}
+    {% if not user.is_authenticated %}
+        <li class=""><a href="#" ng-init="showModal=false" ng-click="showModal =!showModal;">Вход</a></li>
+    {% else %}
+        <li>
+            <a href="{% url 'messages_inbox' %}"><i class="fa fa-envelope fa-1x" aria-hidden="true" style="font-size: 18px;{% if mail > 0  %}color: #40A040;{% endif %}"></i></a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Вы вошли как
+                <strong>{{ user }}</strong> <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                {% if user.is_superuser %}
+                    <li>
+                        <a href="/admin"><span class="glyphicon glyphicon-cog"></span>
+                            &nbsp; Управление системой
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{% url 'user_profile' pk=request.user.profile.pk %}">
+                        <span class="glyphicon glyphicon-user"></span>
+                        &nbsp; Профиль
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>
+                        &nbsp; Выйти из профиля
+                    </a>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+    </ul>

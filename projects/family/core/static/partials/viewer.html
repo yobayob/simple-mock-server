@@ -1,0 +1,13 @@
+
+<nav ng-class="getNavStyle(scroll)">
+  <ul class="nav navbar-nav">
+   <li><button class="btn btn-default" ng-click="goPrevious()"><</span></button></li>
+   <li><button class="btn btn-default" ng-click="goNext()">></span></button></li>
+  </ul>
+  <ul class="nav navbar-nav pull-right">
+   <li> {{pageNum}}/{{pageCount}}</li>
+  </ul>
+</nav>
+{{loading}}
+    <canvas id="pdf" class="rotate0"></canvas>
+  

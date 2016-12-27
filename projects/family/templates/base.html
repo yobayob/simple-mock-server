@@ -1,0 +1,103 @@
+{% load static %}
+<!doctype html>
+    <html lang="ru" ng-app='app'>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name='yandex-verification' content='4f3b01f52c93e79c' />
+        <meta name="google-site-verification" content="AnRY7gdm96M2zV2iFskUM5VUjsJERu-kcUVJC9F_2q8" />
+        <title>{% if title %}{{ title }}{% else %}ГБУ "Семья"{% endif %}</title>
+
+        <link rel="stylesheet" href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+        <link href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/paper.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'bower_components/selectize/dist/css/selectize.bootstrap3.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vision.css' %}">
+        <link rel="shortcut icon" href="{% static 'img/ico.png' %}">
+    </head>
+    <body class="">
+      <div class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-left text-center">
+                {% block nav %}
+
+                {% endblock %}
+            </ul>
+            {% include 'standart/top_menu.html' %}
+         </div>
+      </div>
+
+      {% include 'standart/special_view.html' %}
+  <div class="page">
+      {% block content %}
+      {% endblock %}
+    </div>
+  <footer>
+      <div class="container"><p class="pull-left">
+          &copy;&nbsp;Учебно-методический отдел по социальной реабилитации и ресоциализации лиц с зависимым и созависимым поведением, СПб ГБУ &laquo;Городской информационно-методический центр "Семья"&raquo;
+          <br>
+          {{ git_sha_id }} Санкт-Петербург &mdash; 2016 год.</p>
+      </div>
+
+  </footer>
+
+    <!--JS-->
+        <script src="{{STATIC_URL}}bower_components/jquery/dist/jquery.js"></script>
+
+        <script src="{{STATIC_URL}}bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script src="{{STATIC_URL}}bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.ru.min.js"></script>
+        <script src="{{STATIC_URL}}bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="{{STATIC_URL}}bower_components/angular/angular.js"></script>
+        <script src="{{STATIC_URL}}js/ymaps.js"></script>
+        <script src="{{STATIC_URL}}bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="{{STATIC_URL}}bower_components/angular-ui-select/dist/select.js"></script>
+        <script src="{{STATIC_URL}}bower_components/pdfjs-dist/build/pdf.js"></script>
+        <script src="{{STATIC_URL}}bower_components/angular-pdf/dist/angular-pdf.min.js"></script>
+        <script src="{% static 'bower_components/stacktable.js/stacktable.js' %}"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}bower_components/angular-selectize2/dist/angular-selectize.js"></script>
+        <script src="{{STATIC_URL}}js/app.js"></script>
+        <script src="{{STATIC_URL}}js/directive.js"></script>
+        <script src="{{STATIC_URL}}js/controllers.js"></script>
+        <script src="{{STATIC_URL}}js/init.js"></script>
+        {% if public %}
+        <script src="{{STATIC_URL}}js/vision.js"></script>
+        {% endif %}
+        {% block js %}
+        {% endblock %}
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter36377925 = new Ya.Metrika({
+                        id:36377925,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+
+
+    <noscript><div><img src="https://mc.yandex.ru/watch/36377925" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    {% if not user.is_authenticated %}
+    {% include 'registration/modal_login_form.html' %}
+  {% endif %}
+</body>

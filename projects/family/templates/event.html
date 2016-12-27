@@ -1,0 +1,86 @@
+{% extends 'profile/profile_content.html' %}
+
+
+
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li><a href="{% url 'event' %}">Мероприятия</a></li>
+        <li class="active">Мероприятие #{{ object.id }}</li>
+    </ol>
+{% endblock %}\
+
+{% block content_full %}
+    <div class="panel panel-default">
+        <div class="panel-body" ng-controller="Profile">
+
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Название мероприятия</label>
+                    <input disabled="true" class="form-control" value="{{ object.name }}">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Дата мероприятия</label>
+                    <input disabled="true" contenteditable="false" class="form-control" value="{{ object.date }}">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Организация</label>
+                    <input disabled="true" contenteditable="false" class="form-control"
+                           value="{{ object.organization }}">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Адрес</label>
+                    <input disabled="true" contenteditable="false" class="form-control" value="{{ object.address }}">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Категория участников</label>
+                    <textarea disabled="true" type="textarea" contenteditable="false"
+                              class="form-control">{{ object.participant }}</textarea>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Дополнительная информация</label>
+                    <textarea disabled="true" contenteditable="false"
+                              class="form-control">{{ object.description }}</textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+                {% if user.is_superuser %}
+                    <button class="btn btn-primary"
+                            ng-click="getForm('{% url "send_notification_event" pk=object.id %} '); showMe =!showMe;">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                    </button>
+                {% endif %}
+                {% if user.profile.organization == event.organization %}
+                    <a class="btn btn-primary"
+                           href="{% url "edit_event" pk=object.id %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                {% endif %}
+                <div class="collapsing">
+                    <modal title="Изменение" visible="showMe">
+                        <div bind-unsafe-html="form">
+
+                        </div>
+                    </modal>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

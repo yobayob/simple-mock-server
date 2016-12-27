@@ -1,0 +1,209 @@
+{% extends 'profile/profile_content.html' %}
+{% load l10n %}
+
+{% block nav %}
+    <ol class="breadcrumb">
+        <li><a href="/">Система</a></li>
+        <li class="active">Личный кабинет</li>
+    </ol>
+{% endblock %}
+
+{% block content_left %}
+    <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    {{ object.organization.name }}
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'edit_org_form' %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+
+            <p><strong>Полное название: </strong> {{ object.organization.full_name }}</p>
+
+            <p><strong>Юридический адрес:</strong> {{ object.organization.address }}</p>
+
+            <p><strong>Фактический адрес:</strong> {{ object.organization.fact_address }}
+            </p>
+            {% if object.organization.phone %}
+                <p><strong>Телефон:</strong> {{ object.organization.phone }}
+                </p>
+            {% endif %}
+            {% if object.organization.mail %}
+                <p><strong>E-mail:</strong> {{ object.organization.mail }}
+                </p>
+            {% endif %}
+
+            <p><strong>Индекс:</strong> {{ object.organization.index }}</p>
+            {% if object.organization.district %}
+                <p><strong>Район:</strong> {{ object.organization.district }}</p>
+            {% endif %}
+            <p><strong>Тип:</strong> {{ object.organization.type }}</p>
+
+            <p><strong>Организационно-правовая
+                форма:</strong> {{ object.organization.legal_type }}</p>
+            {% if object.organization.religion %}
+                <p><strong>Конфессия:</strong> {{ object.organization.religion }}</p>
+            {% endif %}
+            <p><strong>Статус:</strong> {{ object.organization.get_status_display }}</p>
+
+            <p><strong>Руководитель:</strong> {{ object.organization.chief }}</p>
+
+            <p><strong>Должность руководителя:</strong> {{ object.organization.chief_post }}
+            </p>
+
+            <p><strong>UUID:</strong> {{ object.organization.uuid }}</p>
+
+            <p><strong>ОРГН:</strong> {{ object.organization.orgn }}</p>
+
+            <p><strong>ИНН:</strong> {{ object.organization.inn }}</p>
+
+            <p><strong>Внесены в реестр поставщиков социальных услуг:</strong>
+                {% if object.organization.is_in_social_register %} Да {% else %}
+                    Нет {% endif %}</p>
+
+            <p><strong>Добавлено в систему:</strong> {{ object.organization.created }}</p>
+
+            <p><strong>Последняя правка:</strong> {{ object.organization.changed }}</p>
+            {% if object.organization.description %}
+                <p><strong>Описание:</strong> {{ object.organization.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Организация на карте
+                </div>
+            </div>
+                <div style="width:100%; height:500px">
+                    {% localize off %}
+                        <yandex-map center="[{{ object.organization.coor_x }},{{ object.organization.coor_y }}]"
+                                    zoom=15>
+                            <ymap-marker
+                                    coordinates="[{{ object.organization.coor_x }},{{ object.organization.coor_y }}]"
+                                    options="{preset: 'islands#icon', iconColor: '#2aff00'}"
+                                    properties="{balloonContent: '<p><b>{{ object.organization.name }}</b></p><p>{{ object.organization.address }}</p>'}"></ymap-marker>
+                            {% for socialservice in object.organization.socialservice_set.all %}
+                                {% if socialservice.address %}
+                                    <ymap-marker coordinates="[{{ socialservice.coor_x }}, {{ socialservice.coor_y }}]"
+                                                 options="{preset: 'islands#icon', iconColor: '#f40f0f'}"
+                                                 properties="{balloonContent: '<p><b>{{ socialservice.name }}</b></p><p>{{ socialservice.type }}</p><p>{{ socialservice.address }}</p>',
+                                                                                      clusterCaption:  '{{ socialservice.name }}' }"></ymap-marker>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="legend">
+                                <li><span class="glyphicon glyphicon-map-marker" style="color:#2aff00"></span>
+                                    - {{ object.organization.name }}</li>
+                                {% if object.organization.socialservice_set.all %}
+                                    <li><span class="glyphicon glyphicon-map-marker" style="color:#f40f0f"></span> -
+                                        Подразделения
+                                    </li>{% endif %}
+                            </div>
+                        </yandex-map>
+                    {% endlocalize %}
+                </div>
+    </div>
+{% endblock %}
+
+{% block content_right %}
+    <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Подразделения
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'add_social_form' %}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                </div>
+            </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Наименования подразделения</th>
+                    <th>Тип</th>
+                    <th>Адрес</th>
+                    <th>Ред</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for socialservice in object.organization.socialservice_set.all %}
+                    <tr>
+                        <td scope="row">{{ forloop.counter }}</td>
+                        <td>
+                            <a href='{% url 'social_service_detail' pk=socialservice.pk %}'>{{ socialservice.name }}</a>
+                        </td>
+                        <td>{{ socialservice.type }}</td>
+                        <td>{{ socialservice.address }}</td>
+                        <td><a href="{% url 'edit_social_service' pk=socialservice.id %}" class="btn btn-green btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Подразделений не найдено</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-skin">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Мобильные службы
+                    <a class="btn btn-sm btn-danger pull-right" href="{% url 'add_ms' %}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                </div>
+            </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Наименования мобильных служб</th>
+                    <th>Тип</th>
+                    <th>Маршрут</th>
+                    <th>Ред</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for socialservice in object.organization.ms_set.all %}
+                    <tr>
+                        <td scope="row">{{ forloop.counter }}</td>
+                        <td>
+                            <a href='{% url 'ms_detail'  pk=socialservice.pk %}'>{{ socialservice.name }}</a>
+                        </td>
+                        <td>{{ socialservice.type }}</td>
+                        <td>
+                            <ul class="list-unstyled">
+                                {% for point in socialservice.routems_set.all %}
+                                    <li>
+                                        {{ point.address }}
+                                    </li>
+                                {% empty %}
+                                    <li>
+                                        Маршрут не добавлен
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td><a href="{% url 'edit_ms' pk=socialservice.id %}" class="btn btn-green btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Мобильных служб не найдено</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

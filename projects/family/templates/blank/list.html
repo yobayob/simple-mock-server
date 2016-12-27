@@ -1,0 +1,67 @@
+{% extends 'profile/profile_content.html' %}
+{% load l10n %}
+{% block nav%}
+    <li>
+        <ol class="breadcrumb">
+            <li><a href="/">Система</a></li>
+            <li class="active">Учетные карточки</li>
+        </ol>
+    </li>
+{% endblock %}
+{% block content_full %}
+    <div class="panel panel-skin">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Учетные карточки
+                <a class="btn btn-sm btn-danger pull-right"
+                          href="{% url 'add_blank' %}" title="Добавить карточку">
+                    <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Полное имя</th>
+                <th>Причина обращения</th>
+                <th>Должность</th>
+                <th>Место работы</th>
+                <th>Информация</th>
+                <th>Редактировать</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td><a href="{{ object.get_absolute_url }}">{{ object.patient }}</a></td>
+                <td>{{ object.reason_for_request }}</td>
+                <td>{{ object.position }}</td>
+                <td>
+                    {{ object.get_job_display }}
+                </td>
+                <td>
+                    <ul class="profile-info">
+                    {% if object.phone %}
+                        <li><i class="glyphicon glyphicon-phone"></i> {{ object.organization.phone }}</li>
+                    {% endif %}
+                </ul>
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-green"
+                          href="#" title="Редактировать">
+                        <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                    </a>
+                    <a class="btn btn-sm btn-green"
+                          href="#" title="Добавить услугу">
+                        <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}
