@@ -1,6 +1,1 @@
-PORT = 5111
-
-try:
-	import local_settings
-except:
-	pass
+PORT = 5010
