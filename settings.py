@@ -1,1 +1,6 @@
-BASE_URL = 'http://127.0.0.1:5000'
+PORT = 5111
+
+try:
+	import local_settings
+except:
+	pass
